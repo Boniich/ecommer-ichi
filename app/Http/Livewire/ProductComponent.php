@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Models\Product;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class ProductComponent extends Component
@@ -16,13 +17,11 @@ class ProductComponent extends Component
         return view('livewire.product-component', compact('products'));
     }
 
-    public function addToCar()
+    public function addToCar(int $productId)
     {
 
-        $user = User::find(1);
+        $user = User::select('id')->find(Auth::user()->id);
 
-        $user->products()->attach(1);
-
-        dd($user->products);
+        $user->products()->attach($productId);
     }
 }
