@@ -14,16 +14,16 @@ class CarComponent extends Component
     public $total = 0;
 
     protected $listeners = [
-        'refreshCar' => 'refreshCar'
+        'loadShoppingCar' => 'loadShoppingCar'
     ];
 
     public function mount()
     {
         $this->user = User::find(Auth()->user()->id);
-        $this->refreshCar(); // este metodo deberia cambiar de nombre. ya que al ser montado no tiene sentido que se llame 'refresh'
+        $this->loadShoppingCar(); // este metodo deberia cambiar de nombre. ya que al ser montado no tiene sentido que se llame 'refresh'
     }
 
-    public function refreshCar()
+    public function loadShoppingCar()
     {
         $this->newData = $this->user->products;
         $this->calculateTotalPrice();
@@ -45,6 +45,6 @@ class CarComponent extends Component
     public function remove($id)
     {
         $this->user->products()->detach($id);
-        $this->emit('refreshCar');
+        $this->emit('loadShoppingCar');
     }
 }
