@@ -9,39 +9,32 @@ use Livewire\Component;
 class CarComponent extends Component
 {
 
-    public $check = false;
     public $newData;
-    public $data;
+    public $user;
 
     protected $listeners = [
-        'getCar' => 'getCar'
+        'refreshCar' => 'refreshCar'
     ];
 
     public function mount()
     {
-        $this->getCar();
+        $this->user = User::find(Auth()->user()->id);
+        $this->refreshCar();
     }
 
-    public function getCar()
+    public function refreshCar()
     {
-        $this->data = User::find(Auth()->user()->id);
-        $this->newData = $this->data->products;
+        $this->newData = $this->user->products;
     }
 
     public function render()
     {
-        if ($this->check) {
-            dd($this->newData);
-        }
-        return view('livewire.car-component', ['newData' => $this->newData]);
+        return view('livewire.car-component');
     }
 
     public function remove($id)
     {
-        $this->data->products()->detach($id);
-        $this->data = User::find(Auth()->user()->id);
-        $this->newData = $this->data->products;
-        // $this->emit('getCar');
-        $this->check = !true;
+        $this->user->products()->detach($id);
+        $this->emit('refreshCar');
     }
 }
