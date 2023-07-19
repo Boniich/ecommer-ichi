@@ -11,6 +11,13 @@ class ProductComponent extends Component
 {
 
     public $isProductInCar = false;
+    public $user;
+
+
+    public function mount()
+    {
+        $this->user = $this->getUser();
+    }
 
 
     public function render()
@@ -21,17 +28,29 @@ class ProductComponent extends Component
         return view('livewire.product-component', compact('products'));
     }
 
+    public function getUser()
+    {
+        return User::select('id')->find(Auth::user()->id);
+    }
+
+    public function checkProductInCarList(int $productId)
+    {
+        return $this->user->products()->find($productId);
+    }
+
+    public function attachProduct(int $productId)
+    {
+        $this->user->products()->attach($productId);
+    }
+
+    public function activeProductIsInCarAlert()
+    {
+        $this->isProductInCar = true;
+    }
+
     public function addToCar(int $productId)
     {
-
-        $user = User::select('id')->find(Auth::user()->id);
-
-        $product = $user->products()->find($productId);
-
-        if (is_null($product)) {
-            $user->products()->attach($productId);
-        } else {
-            $this->isProductInCar = true;
-        }
+        is_null($this->checkProductInCarList($productId)) ? $this->attachProduct($productId) :
+            $this->activeProductIsInCarAlert();
     }
 }
