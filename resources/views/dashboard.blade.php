@@ -10,6 +10,9 @@
             <div>
                 {{-- <x-welcome /> --}}
                 @livewire('product-component')
+                <script>
+                    Swal.fire("Any fool can use a computer");
+                </script>
             </div>
         </div>
     </div>

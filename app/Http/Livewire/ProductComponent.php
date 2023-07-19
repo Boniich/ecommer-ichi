@@ -9,6 +9,9 @@ use Livewire\Component;
 
 class ProductComponent extends Component
 {
+
+
+
     public function render()
     {
 
