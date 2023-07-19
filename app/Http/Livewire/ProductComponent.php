@@ -24,10 +24,16 @@ class ProductComponent extends Component
     public function render()
     {
 
-        $products = Product::all();
+        $products = $this->listAllProducts();
 
         return view('livewire.product-component', compact('products'));
     }
+
+    public function listAllProducts()
+    {
+        return Product::all();
+    }
+
 
     public function getUser()
     {
