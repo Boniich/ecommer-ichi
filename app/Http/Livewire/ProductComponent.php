@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Models\Product;
 use App\Models\User;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
@@ -35,7 +36,14 @@ class ProductComponent extends Component
 
     public function checkProductInCarList(int $productId)
     {
-        return $this->user->products()->find($productId);
+        try {
+            //si lo encuentra, no falla pero no se debe agregar producto al carrito
+            //si no lo encuentra, falla pero devuelve TRUE para agregar el producto al carrito
+            $this->user->products()->findOrFail($productId);
+            return false;
+        } catch (ModelNotFoundException $th) {
+            return true;
+        }
     }
 
     public function attachProduct(int $productId)
@@ -50,7 +58,7 @@ class ProductComponent extends Component
 
     public function addToCar(int $productId)
     {
-        is_null($this->checkProductInCarList($productId)) ? $this->attachProduct($productId) :
+        $this->checkProductInCarList($productId) ? $this->attachProduct($productId) :
             $this->activeProductIsInCarAlert();
     }
 }
