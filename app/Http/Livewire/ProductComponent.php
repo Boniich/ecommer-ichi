@@ -10,6 +10,7 @@ use Livewire\Component;
 class ProductComponent extends Component
 {
 
+    public $isProductInCar = false;
 
 
     public function render()
@@ -25,6 +26,12 @@ class ProductComponent extends Component
 
         $user = User::select('id')->find(Auth::user()->id);
 
-        $user->products()->attach($productId);
+        $product = $user->products()->find($productId);
+
+        if (is_null($product)) {
+            $user->products()->attach($productId);
+        } else {
+            $this->isProductInCar = true;
+        }
     }
 }

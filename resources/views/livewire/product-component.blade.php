@@ -28,4 +28,20 @@
         </div>
     @endforeach
 
+    <x-dialog-modal wire:model="isProductInCar">
+        <x-slot name='title'>
+            Alerta
+        </x-slot>
+        <x-slot name='content'>
+            <div>
+                <h1 class="text-xl text-black">Este producto ya esta agregado a tu carrito. No puedes agregar mas en
+                    esta version!
+                </h1>
+            </div>
+        </x-slot>
+        <x-slot name='footer'>
+            <x-secondary-button wire:click="$set('isProductInCar',false)">ok</x-secondary-button>
+        </x-slot>
+    </x-dialog-modal>
+
 </div>
