@@ -11,50 +11,21 @@ use Livewire\Component;
 class ProductComponent extends Component
 {
 
-    public $isProductInCar = false;
     public $user;
+    public $product;
+    public $isProductInCar = false;
 
 
-    public function mount()
+    public function mount(Product $product)
     {
-        $this->user = $this->getUser();
+        $this->product = $product;
+        $this->user = $this->product->getUser();
     }
 
 
     public function render()
     {
-
-        $products = $this->listAllProducts();
-
-        return view('livewire.product-component', compact('products'));
-    }
-
-    public function listAllProducts()
-    {
-        return Product::all();
-    }
-
-
-    public function getUser()
-    {
-        return User::select('id')->find(Auth::user()->id);
-    }
-
-    public function checkProductInCarList(int $productId)
-    {
-        try {
-            //si lo encuentra, no falla pero no se debe agregar producto al carrito
-            //si no lo encuentra, falla pero devuelve TRUE para agregar el producto al carrito
-            $this->user->products()->findOrFail($productId);
-            return false;
-        } catch (ModelNotFoundException $th) {
-            return true;
-        }
-    }
-
-    public function attachProduct(int $productId)
-    {
-        $this->user->products()->attach($productId);
+        return view('livewire.product-component', ['products' => $this->product->listAllProducts()]);
     }
 
     public function activeProductIsInCarAlert()
@@ -64,7 +35,7 @@ class ProductComponent extends Component
 
     public function addToCar(int $productId)
     {
-        $this->checkProductInCarList($productId) ? $this->attachProduct($productId) :
+        $this->product->checkProductInCarList($productId, $this->user) ? $this->product->attachProduct($productId, $this->user) :
             $this->activeProductIsInCarAlert();
     }
 }
