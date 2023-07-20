@@ -56,14 +56,30 @@
                             </div>
                         </dl>
                         <div class="flex justify-end">
-                            <a href="#"
+                            <button wire:click="orderProducts()"
                                 class="block rounded bg-gray-700 px-5 py-3 text-sm text-gray-100 transition hover:bg-gray-600">
-                                Checkout
-                            </a>
+                                Order
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+
+    <x-dialog-modal wire:model="isMailSended">
+        <x-slot name='title'>
+            Alerta
+        </x-slot>
+        <x-slot name='content'>
+            <div>
+                <h1 class="text-xl text-black">Te hemos enviado un mail para que puedas completar tu orden de compras!
+                </h1>
+            </div>
+        </x-slot>
+        <x-slot name='footer'>
+            <x-secondary-button wire:click="$set('isMailSended',false)">ok</x-secondary-button>
+        </x-slot>
+    </x-dialog-modal>
 </section>
