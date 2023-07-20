@@ -16,10 +16,10 @@ class ProductComponent extends Component
     public $isProductInCar = false;
 
 
-    public function mount(Product $product)
+    public function mount(Product $product, User $user)
     {
         $this->product = $product;
-        $this->user = $this->product->getUser();
+        $this->user = $user->getAuthenticateUser();
     }
 
 

@@ -17,10 +17,10 @@ class CarComponent extends Component
         'loadShoppingCar' => 'loadShoppingCar'
     ];
 
-    public function mount()
+    public function mount(User $user)
     {
-        $this->user = User::find(Auth()->user()->id);
-        $this->loadShoppingCar(); // este metodo deberia cambiar de nombre. ya que al ser montado no tiene sentido que se llame 'refresh'
+        $this->user = $user->getAuthenticateUser();
+        $this->loadShoppingCar();
     }
 
     public function loadShoppingCar()
