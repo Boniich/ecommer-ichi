@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 class Product extends Model
 {
     use HasFactory;
-    
+
 
     public function users()
     {
@@ -21,12 +21,6 @@ class Product extends Model
     public function listAllProducts()
     {
         return $this->all();
-    }
-
-
-    public function getUser()
-    {
-        return User::select('id')->find(Auth::user()->id);
     }
 
     public function checkProductInCarList(int $productId, $user)
